@@ -1,0 +1,36 @@
+name : CI/CD for Dockerized Flask App
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest 
+
+
+        steps : 
+        - name: Checkout code
+          uses: action/Checkout@v3
+
+        - name: Set up python 
+          uses : action/Setup-python@v4
+
+         with :
+            python-version: '3.9'
+        
+         name : Install dependencies
+         run : 
+            python -m pip install --upgrade pip 
+            pip install flask
+            pip install gytest
+
+         name : Run tests 
+         run : gytest
+
+build-and-publish:
+    needes : build-and-test
+    runs-on : ubantu-latest
+    
